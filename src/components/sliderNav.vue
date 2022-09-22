@@ -14,10 +14,11 @@
             </a-breadcrumb>
         </div>
         <div class="user-info">
-            <li>欢迎gqg
+            <li>
+                {{ this.$store.state.userInfo.username }}
                 <a-icon type="down" />
             </li>
-            <li>退出</li>
+            <li @click="logout">退出</li>
         </div>
   </div>
 </template>
@@ -27,6 +28,12 @@ import { mapActions, mapState } from "vuex"
 export default {
   methods: {
     ...mapActions(['changCollapsed']),
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push({
+        name:'Login',
+      });
+    }
   },
   computed: {
       ...mapState({
