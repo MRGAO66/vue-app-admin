@@ -3,6 +3,7 @@
     <left-menu></left-menu>
     <div :class="{ 'main-app': true, 'meun-unfold': collapsed }">
     <silder-nav></silder-nav>
+    <router-view></router-view>
     </div>
   </div>
 </template>
