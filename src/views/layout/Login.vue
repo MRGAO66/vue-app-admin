@@ -70,11 +70,12 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           api.login(this.loginfrom).then((res) => {
-              console.log(this.$store.state.userInfo.username);
               this.$store.dispatch('getUserInfo',res);
               this.$router.push({
                   name: "Home"
-              })
+              });
+          }).catch((error) => {
+            this.$message.error(error);
           })
           return true;
         } 
