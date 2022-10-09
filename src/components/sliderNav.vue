@@ -1,48 +1,59 @@
 <template>
-  <div class="main-header">
-        <a-button
-          type="primary"
-          style="margin-bottom: 16px"
-          @click="changCollapsed"
-        >
-          <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
-        </a-button>
-        <div class="breadcrumb">
-            <a-breadcrumb>
-                <a-breadcrumb-item>首页</a-breadcrumb-item>
-                <a-breadcrumb-item><a href="">统计</a></a-breadcrumb-item>
-            </a-breadcrumb>
-        </div>
-        <div class="user-info">
-            <li>
-                {{ this.$store.state.userInfo.username }}
-                <a-icon type="down" />
-            </li>
-            <li @click="logout">退出</li>
-        </div>
+  <div class="silder-nav">
+    <a-button type="primary" @click="toggleCollapsed">
+      <a-icon :type="$store.state.collapsed ? 'menu-unfold' : 'menu-fold'" />
+    </a-button>
+    <div class="breadcrumb">
+      <a-breadcrumb v-if="currentRoute.length > 1">
+        <a-breadcrumb-item>{{
+          currentRoute[0] ? currentRoute[0].meta.title : ""
+        }}</a-breadcrumb-item>
+        <a-breadcrumb-item>
+          <router-link :to="{ name: currentRoute[1].name }">
+            {{ currentRoute[1] ? currentRoute[1].meta.title : "" }}
+          </router-link>
+        </a-breadcrumb-item>
+      </a-breadcrumb>
+    </div>
+    <ul class="user-info">
+      <li class="user-name">
+        {{ $store.state.user.username }}
+        <a-icon type="down" />
+      </li>
+      <li class="login-out" @click="logout">退出</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex"
+import { mapActions, mapState } from "vuex";
 export default {
+  data() {
+    return {
+      currentRoute: this.$router.currentRoute.matched,
+    };
+  },
+  watch: {
+    $route() {
+      this.currentRoute = this.$router.currentRoute.matched;
+    },
+  },
   methods: {
-    ...mapActions(['changCollapsed']),
+    ...mapActions(["changCollapsed"]),
     logout() {
-      this.$store.dispatch('logout');
+      this.$store.dispatch("logout");
       this.$router.push({
-        name:'Login',
+        name: "Login",
       });
-    }
+    },
   },
   computed: {
-      ...mapState({
-        collapsed: (state) => state.collapsed
-    })
-  }
-}
+    ...mapState({
+      collapsed: (state) => state.collapsed,
+    }),
+  },
+};
 </script>
 
 <style>
-
 </style>

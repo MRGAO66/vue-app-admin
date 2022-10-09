@@ -89,8 +89,10 @@ router.beforeEach(function(to,from, next) {
         if (store.state.userInfo.appkey && store.state.userInfo.username && store.state.userInfo.role) {
             if (!isAddRoutes) {
                 const menuRoutes = getMenuRoutes(store.state.userInfo.role, ayncRouterMap);
-                router.addRoutes(menuRoutes);
-                store.dispatch('changeMenuRoutes', routes.concat(menuRoutes));
+                store.dispatch('changeMenuRoutes', routes.concat(menuRoutes)).then(() => {
+                    router.addRoutes(menuRoutes);
+                    next();
+                });
                 isAddRoutes = true;
             }
             return next();
